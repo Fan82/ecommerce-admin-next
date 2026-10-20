@@ -1,3 +1,3 @@
 export default function NewProductPage() {
-    return (<><h1>New Product</h1></>)
+    return <p>Add Products</p>
 }
