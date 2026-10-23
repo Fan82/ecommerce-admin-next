@@ -1,3 +1,12 @@
+import Link from "next/link";
+import ProductForm from "@/components/ProductForm";
+
 export default function NewProductPage() {
-    return <p>Add Products</p>
+  return (
+    <div>
+      <h2>New Product</h2>
+      <Link href="/products">Cancel</Link>
+      <ProductForm />
+    </div>
+  );
 }
