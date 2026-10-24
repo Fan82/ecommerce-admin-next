@@ -1,13 +1,17 @@
 // app/products/layout.tsx
 import Link from "next/link";
-
-export default function ProductsLayout({ children }: { children: React.ReactNode }) {
+import NavLink from "@/components/NavLink";
+export default function ProductsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div>
       <h1>Products</h1>
       <nav>
-        <Link href="/products">All Products</Link>
-        <Link href="/products/new">Add Product</Link>
+        <NavLink href="/products" label="All Products" />
+        <NavLink href="/products/new" label="Add Product" />
       </nav>
       {children}
     </div>
