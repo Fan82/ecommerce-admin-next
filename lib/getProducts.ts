@@ -7,12 +7,8 @@ function delay(ms: number): Promise<void> {
   });
 }
 
-export async function getProducts(): Promise<Product[]> {
-  await delay(1500);
-  return mockProducts;
-}
-
-export async function getProductById(id: number): Promise<Product | undefined> {
-  await delay(500);
-  return mockProducts.find((product) => product.id === id);
+export async function getProducts(category?: string): Promise<Product[]> {
+  await delay(1000);
+  if(!category) return mockProducts;
+  return mockProducts.filter((product) => product.category === category);
 }

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getProductById } from "@/lib/getProductById";
-import type { Product } from "@/lib/types";
+import type { Product } from "@/types/product";
 
 export default function ProductDetailClient({ id }: { id: string }) {
     const [product, setProduct] = useState<Product | null>(null);
@@ -9,7 +9,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        getProductById(id)
+        getProductById(Number(id))
             .then((result) => {
                 setProduct(result);
             })
