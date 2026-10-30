@@ -1,8 +1,10 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProductById } from "@/lib/getProductById";
 import StockBadge from "@/components/StockBadge";
+import RelatedProducts from "@/components/RelatedProducts";
 
 type ProductDetailPageProps = {
   params: Promise<{ id: string }>;
@@ -26,6 +28,12 @@ export default async function ProductDetailPage({ params }: ProductDetailPagePro
       <h1>{product.name}</h1>
       <p>NT$ {product.price}</p>
       <StockBadge stock={product.stock} />
+
+      <h2>Related products</h2>
+      <Suspense fallback={<p>Loading related products...</p>}>
+        <RelatedProducts category={product.category} excludeId={product.id} />
+      </Suspense>
+
       <Link href="/products">Back to products</Link>
     </div>
   );
