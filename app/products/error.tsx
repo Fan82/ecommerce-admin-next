@@ -1,17 +1,22 @@
 "use client";
+import { useEffect } from "react";
 
 export default function ProductsError({
   error,
   reset,
 }: {
-  error: Error;
+  error: Error & {digest?: string};
   reset: () => void;
 }) {
+
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
+  
   return (
     <div>
-      <h2>Something went wrong</h2>
-      <p>{error.message}</p>
-      <button onClick={reset}>Try again</button>
+      <p>Something went wrong while loading products.</p>
+      <button onClick={() => reset()}>Retry</button>
     </div>
   );
 }
