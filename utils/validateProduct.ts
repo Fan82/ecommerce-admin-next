@@ -1,5 +1,3 @@
-import { error } from "console";
-
 type ProductInput = {
   name: string;
   price: string;

@@ -5,17 +5,17 @@ import { mockProducts } from "@/lib/mockProducts";
 import ProductItem from "./ProductItem";
 
 export default function ProductList() {
-    const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [products, setProducts] = useState<Product[]>(mockProducts);
 
-    const handleDelete = (id: number) => {
-        setProducts(products.filter((p) => p.id !== p.id))
-    }
+  const handleDelete = (id: number) => {
+    setProducts(products.filter((p) => p.id !== id));
+  };
 
-    return (
-        <ul>
-            {products.map((p) => (
-                <ProductItem key={p.id} product={p} onDelete={handleDelete} />
-            ))}
-        </ul>
-    );
+  return (
+    <ul>
+      {products.map((p) => (
+        <ProductItem key={p.id} product={p} onDelete={handleDelete} />
+      ))}
+    </ul>
+  );
 }

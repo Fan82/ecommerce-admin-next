@@ -1,5 +1,3 @@
-// app/products/layout.tsx
-import Link from "next/link";
 import NavLink from "@/components/NavLink";
 export default function ProductsLayout({
   children,
