@@ -10,16 +10,20 @@ type ProductDetailPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export async function generateMetadata({ params }: ProductDetailPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ProductDetailPageProps): Promise<Metadata> {
   const { id } = await params;
-  const product = await getProductById(Number(id));
+  const product = await getProductById(id);
   if (!product) return { title: "Product not found" };
   return { title: product.name };
 }
 
-export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
+export default async function ProductDetailPage({
+  params,
+}: ProductDetailPageProps) {
   const { id } = await params;
-  const product = await getProductById(Number(id));
+  const product = await getProductById(id);
 
   if (!product) notFound();
 

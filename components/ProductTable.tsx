@@ -20,7 +20,7 @@ export default function ProductTable({ products }: { products: Product[] }) {
               <Link href={`/products/${product.id}`}>{product.name}</Link>
             </td>
             <td>NT$ {product.price}</td>
-            <td>NT$ {product.category}</td>
+            <td>{product.category}</td>
             <td>
               <StockBadge stock={product.stock} />
             </td>
