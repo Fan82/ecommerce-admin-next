@@ -1,12 +1,16 @@
-import Link from "next/link";
+import type { Metadata } from "next";
 import ProductForm from "@/components/ProductForm";
+import PageHeader from "@/components/PageHeader";
+
+export const metadata: Metadata = {
+  title: "Add product",
+};
 
 export default function NewProductPage() {
   return (
-    <div>
-      <h2>New Product</h2>
-      <Link href="/products">Cancel</Link>
+    <>
+      <PageHeader title="Add product" backHref="/products" backLabel="Products" />
       <ProductForm />
-    </div>
+    </>
   );
 }

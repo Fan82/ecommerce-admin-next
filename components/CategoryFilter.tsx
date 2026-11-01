@@ -1,17 +1,25 @@
 import Link from "next/link";
+import { categories } from "@/lib/categories";
 
-const categories = [
-  { label: "All", href: "/products" },
-  { label: "Bag", href: "/products?category=bag" },
-  { label: "Shoes", href: "/products?category=shoes" },
-  { label: "Accessory", href: "/products?category=accessory" },
+const filters = [
+  { label: "All", href: "/products", value: undefined },
+  ...categories.map((category) => ({
+    label: category.label,
+    href: `/products?category=${category.value}`,
+    value: category.value,
+  })),
 ];
 
-export function CategoryFilter() {
+export function CategoryFilter({ active }: { active?: string }) {
   return (
-    <nav>
-      {categories.map((item) => (
-        <Link key={item.href} href={item.href}>
+    <nav aria-label="Category" className="segmented">
+      {filters.map((item) => (
+        <Link
+          key={item.href}
+          href={item.href}
+          className="segmented-item"
+          aria-current={item.value === active ? "page" : undefined}
+        >
           {item.label}
         </Link>
       ))}

@@ -1,5 +1,7 @@
 "use client";
 import { useEffect } from "react";
+import EmptyState from "@/components/EmptyState";
+import { BoxIcon } from "@/components/icons";
 
 export default function ProductsError({
   error,
@@ -13,10 +15,16 @@ export default function ProductsError({
   }, [error]);
 
   return (
-    <div>
-      <p>Something went wrong while loading products.</p>
-      <p>{error.message}</p>
-      <button onClick={() => reset()}>Retry</button>
-    </div>
+    <EmptyState
+      icon={<BoxIcon width={26} height={26} />}
+      title="Something went wrong while loading products."
+      description={error.message}
+      action={
+        <button type="button" className="btn btn-primary" onClick={() => reset()}>
+          <span className="icon-circle">↻</span>
+          Retry
+        </button>
+      }
+    />
   );
 }
