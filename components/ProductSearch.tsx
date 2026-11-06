@@ -67,7 +67,7 @@ export default function ProductSearch({ products }: { products: Product[] }) {
           title="No products yet"
           description="Add your first product to start tracking prices, stock and categories."
           action={
-            <Link href="/products/new" className="btn btn-primary">
+            <Link href="/dashboard/products/new" className="btn btn-primary">
               <span className="icon-circle">
                 <PlusIcon />
               </span>

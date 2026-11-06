@@ -4,7 +4,7 @@ import styles from "./AppShell.module.css";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: HomeIcon, exact: true },
-  { href: "/products", label: "Products", icon: BoxIcon },
+  { href: "/dashboard/products", label: "Products", icon: BoxIcon },
   { href: "/orders", label: "Orders", icon: ReceiptIcon },
   { href: "/customers", label: "Customers", icon: UsersIcon },
 ];

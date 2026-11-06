@@ -32,7 +32,7 @@ export default async function ProductDetailPage({
 
   return (
     <>
-      <PageHeader title={product.name} backHref="/products" backLabel="Products" />
+      <PageHeader title={product.name} backHref="/dashboard/products" backLabel="Products" />
 
       <div className="detail-grid">
         <div className="card-feature detail-media">

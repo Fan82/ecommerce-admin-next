@@ -9,7 +9,7 @@ export default function ProductNotFound() {
       title="Product not found"
       description="It may have been removed, or the link is wrong."
       action={
-        <Link href="/products" className="btn btn-primary">
+        <Link href="/dashboard/products" className="btn btn-primary">
           <span className="icon-circle">
             <ArrowLeftIcon />
           </span>

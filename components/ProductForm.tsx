@@ -44,7 +44,7 @@ export default function ProductForm() {
     };
 
     console.log(product);
-    router.push("/products");
+    router.push("/dashboard/products")
   }
 
   const previewPrice = Number(price) > 0 ? formatPrice(Number(price)) : "NT$ —";
@@ -143,7 +143,7 @@ export default function ProductForm() {
         </fieldset>
 
         <div className="form-actions">
-          <Link href="/products" className="btn btn-secondary">
+          <Link href="/dashboard/products" className="btn btn-secondary">
             Cancel
           </Link>
           <button type="submit" className="btn btn-primary">

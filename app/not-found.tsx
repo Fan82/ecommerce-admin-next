@@ -9,7 +9,7 @@ export default function NotFound() {
       title="Page not found"
       description="The page you're looking for doesn't exist."
       action={
-        <Link href="/products" className="btn btn-primary">
+        <Link href="/dashboard/products" className="btn btn-primary">
           <span className="icon-circle">
             <ArrowLeftIcon />
           </span>

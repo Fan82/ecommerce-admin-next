@@ -2,7 +2,7 @@ import Link from "next/link";
 import { categories } from "@/lib/categories";
 
 const filters = [
-  { label: "All", href: "/products", value: undefined },
+  { label: "All", href: "/dashboard/products", value: undefined },
   ...categories.map((category) => ({
     label: category.label,
     href: `/products?category=${category.value}`,
