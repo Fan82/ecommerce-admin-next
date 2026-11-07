@@ -1,8 +1,8 @@
-type ProductInput = {
+export interface ProductInput {
   name: string;
   price: string;
   stock: string;
-};
+}
 
 type ProductError = Partial<Record<"name" | "price" | "stock", string>>;
 
