@@ -2,11 +2,19 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getSession } from "@/lib/auth";
 import { mockProducts } from "@/lib/mockProducts";
-
+import { checkAdmin } from "@/lib/checkAdmin";
+import { PermissionDenied } from "@/components/PermissionDenied";
 
 export default async function ProductsPage() {
   const session = await getSession();
-  if (!session) redirect("/login");
+  const status = checkAdmin(session);
+
+  if (status === "login") {
+    redirect("/login");
+  }
+  if (status === "forbidden") {
+    return <PermissionDenied />;
+  }
 
   return (
     <main>
@@ -16,11 +24,10 @@ export default async function ProductsPage() {
         {mockProducts.map((product) => (
           <li key={product.id}>
             product.name
-            <p>NT$ {product.price}
-            </p>
+            <p>NT$ {product.price}</p>
           </li>
         ))}
       </ul>
     </main>
-  )
+  );
 }
