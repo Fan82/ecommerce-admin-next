@@ -8,11 +8,11 @@ export async function fetchWithTimeout(
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
     const response = await fetch(url, { signal: controller.signal });
-    if (!response.ok && response.status === 403)
+    if (response.status === 403)
       throw new AppError("FORBIDDEN", "Forbidden");
     return response;
   } catch (error) {
-    if (error instanceof Error && error.name === "AbortError") {
+    if (controller.signal.aborted) {
       throw new AppError("TIMEOUT", "Request timed out");
     }
     throw error;

@@ -1,39 +1,41 @@
 "use client"
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { login } from "@/lib/auth";
+import { getUserMessage } from "@/lib/errors";
+import ErrorNotice from "@/components/ErrorNotice";
 
-type Props = {
-    onSubmit: (email: string, password: string) => Promise<void>;
-}
-
-
-export default function LoginForm({ onSubmit }: Props) {
+export default function LoginForm() {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [status, setStatus] = useState<"idle" | "submitting" | "error">("idle");
+    const [isSubmitting, setIsSubmitting] = useState(false)
     const [errorMessage, setErrorMessage] = useState("");
 
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        setStatus("submitting");
-        setErrorMessage("");
+        setIsSubmitting(true)
+        setErrorMessage(null);
         try {
-            await onSubmit(email, password)
-            setStatus("idle")
+            await login(email, password)
+            router.push("/dashboard")
         } catch (err) {
-            setStatus("error")
-            setErrorMessage(err instanceof Error ? err.message : "Something went wrong")
+            setErrorMessage(getUserMessage(err))
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
-
     return (
         <form onSubmit={handleSubmit}>
+            <ErrorNotice message={errorMessage} />
             <label htmlFor="email">Email</label>
             <input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
             />
             <label htmlFor="password">Password</label>
             <input
@@ -41,11 +43,11 @@ export default function LoginForm({ onSubmit }: Props) {
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
             />
-            <button type="submit" disabled={status === "submitting"} >
-                {status === "submitting" ? "Signing in..." : "Sign In"}
+            <button type="submit" disabled={isSubmitting} >
+                {isSubmitting ? "Signing in..." : "Sign In"}
             </button>
-            {errorMessage && <p role="alert">{errorMessage}</p>}
         </form>
     )
 }
