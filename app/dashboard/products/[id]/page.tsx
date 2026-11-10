@@ -10,7 +10,7 @@ import formatPrice from "@/utils/formatPrice";
 import { getStockValue } from "@/utils/inventory";
 
 type ProductDetailPageProps = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: number }>;
 };
 
 export async function generateMetadata({

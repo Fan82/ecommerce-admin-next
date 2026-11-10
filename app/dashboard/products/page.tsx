@@ -17,13 +17,11 @@ export default async function ProductsPage() {
     return <PermissionDenied />;
   }
 
-  const products = await getProducts();
-
   return (
     <main>
       <h1>Products</h1>
       <Link href="/dashboard/products/new">Add product</Link>
-      <ProductListClient initialProducts={products} />
+      <ProductListClient initialProducts={mockProducts} />
     </main>
   );
 }

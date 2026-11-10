@@ -7,9 +7,9 @@ import { getUserMessage } from "@/lib/errors";
 export function useOptimisticFeatured(initialProducts: Product[]) {
     const [products, setProducts] = useState<Product[]>(initialProducts);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [pendingIds, setPendingIds] = useState<string[]>([]);
+    const [pendingIds, setPendingIds] = useState<number[]>([]);
 
-    async function handleToggle(id: string) {
+    async function handleToggle(id: number) {
         if (pendingIds.includes(id)) return;
         const current = products.find((p) => p.id === id);
         if (!current) return;

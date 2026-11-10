@@ -4,7 +4,7 @@ import { Product } from "@/types/product";
 type FeaturedToggleProps = {
     product: Product;
     pending: boolean;
-    onToggle: (id: string) => void
+    onToggle: (id: number) => void
 }
 
 export function FeaturedToggle({ product, pending, onToggle }: FeaturedToggleProps) {

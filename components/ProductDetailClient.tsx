@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { getProductById } from "@/lib/getProductById";
 import type { Product } from "@/types/product";
 
-export default function ProductDetailClient({ id }: { id: string }) {
+export default function ProductDetailClient({ id }: { id: number }) {
   const [product, setProduct] = useState<Product | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");

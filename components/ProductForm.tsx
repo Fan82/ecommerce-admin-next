@@ -41,6 +41,7 @@ export default function ProductForm() {
       price: Number(price),
       stock: Number(stock),
       category,
+      featured: false,
     };
 
     console.log(product);

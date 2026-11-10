@@ -1,53 +1,45 @@
-"use client"
-import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
-import { login } from "@/lib/auth";
+"use client";
+import { useState } from "react";
+import { ErrorNotice } from "@/components/ErrorNotice";
 import { getUserMessage } from "@/lib/errors";
-import ErrorNotice from "@/components/ErrorNotice";
 
-export default function LoginForm() {
-    const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [errorMessage, setErrorMessage] = useState("");
+type LoginFormProps = {
+  onSubmit: (email: string, password: string) => Promise<void>;
+};
 
-    async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        setIsSubmitting(true)
-        setErrorMessage(null);
-        try {
-            await login(email, password)
-            router.push("/dashboard")
-        } catch (err) {
-            setErrorMessage(getUserMessage(err))
-        } finally {
-            setIsSubmitting(false)
-        }
+export function LoginForm({ onSubmit }: LoginFormProps) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setErrorMessage(null);
+    setIsSubmitting(true);
+    try {
+      await onSubmit(email, password);
+    } catch (error) {
+      setErrorMessage(getUserMessage(error));
+    } finally {
+      setIsSubmitting(false);
     }
+  }
 
-    return (
-        <form onSubmit={handleSubmit}>
-            <ErrorNotice message={errorMessage} />
-            <label htmlFor="email">Email</label>
-            <input
-                type="email"
-                id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-            />
-            <label htmlFor="password">Password</label>
-            <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-            />
-            <button type="submit" disabled={isSubmitting} >
-                {isSubmitting ? "Signing in..." : "Sign In"}
-            </button>
-        </form>
-    )
+  return (
+    <form onSubmit={handleSubmit}>
+      <ErrorNotice message={errorMessage} />
+      <label>
+        Email
+        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+      </label>
+      <label>
+        Password
+        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      </label>
+      <button type="submit" disabled={isSubmitting}>
+        {isSubmitting ? "Signing in..." : "Sign in"}
+      </button>
+    </form>
+  );
 }

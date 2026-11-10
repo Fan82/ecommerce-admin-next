@@ -8,7 +8,7 @@ export function useOptimisticDelete(initialProducts: Product[]) {
     const [products, setProducts] = useState<Product[]>(initialProducts);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    async function handleDelete(id: string) {
+    async function handleDelete(id: number) {
         setErrorMessage(null);
         const snapshot = products;
         setProducts(removeProduct(products, id))

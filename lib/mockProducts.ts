@@ -1,7 +1,7 @@
 import { Product } from "@/types/product";
 
 export const mockProducts: Product[] = [
-  { id: 1, name: "Leather Tote", price: 4800, stock: 5, category: "bag" },
-  { id: 2, name: "Silk Scarf", price: 1200, stock: 8, category: "accessory" },
-  { id: 3, name: "Birkenstock", price: 1980, stock: 0, category: "shoes" },
+  { id: 1, name: "Leather Tote", price: 4800, stock: 5, category: "bag",  featured: true },
+  { id: 2, name: "Silk Scarf", price: 1200, stock: 8, category: "accessory",  featured: false },
+  { id: 3, name: "Birkenstock", price: 1980, stock: 0, category: "shoes",  featured: true },
 ];
