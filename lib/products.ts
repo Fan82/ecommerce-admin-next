@@ -1,4 +1,4 @@
-import type { Product } from "@/types/product";
+import { Product } from "@/types/product";
 
 export function removeProduct(products: Product[], id: string): Product[] {
     return products.filter((product) => product.id !== id)
@@ -6,5 +6,11 @@ export function removeProduct(products: Product[], id: string): Product[] {
 export function toggleFeatured(products: Product[], id: string): Product[] {
     return products.map((product) => product.id === id ? {
         ...product, featured: !product.featured
+    } : product)
+}
+export function setFeatured(products: Product[], id: string, featured: boolean): Product[] {
+
+    return products.map((product) => product.id === id ? {
+        ...product, featured
     } : product)
 }
