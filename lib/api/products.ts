@@ -1,19 +1,19 @@
-import { AppError } from "@/lib/errors";
-
-function wait(ms: number) {
+export function wait(ms: number): Promise<void> {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+export const FAIL_IDS: number[] = [2];
+
 export async function updateFeaturedApi(id: number, featured: boolean): Promise<void> {
     await wait(500);
-    if (Math.random() < 0.3) {
-        throw new AppError("UNKNOWN", `Failed to update product ${id} to ${featured}`);
+    if (FAIL_IDS.includes(id)) {
+        throw new Error(`Failed to update product ${id}`);
     }
 }
 
 export async function deleteProductApi(id: number): Promise<void> {
     await wait(500);
-    if (Math.random() < 0.3) {
-        throw new AppError("UNKNOWN", `Failed to delete product ${id}`);
+    if (FAIL_IDS.includes(id)) {
+        throw new Error(`Failed to delete product ${id}`);
     }
 }

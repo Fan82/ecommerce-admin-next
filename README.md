@@ -34,3 +34,25 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Verification
+
+1. **Type Check**
+   - **Do:** Run `npx tsc --noEmit`.
+   - **Expected:** TypeScript reports no type errors.
+
+2. **Production Build**
+   - **Do:** Run `npm run build`.
+   - **Expected:** The Next.js production build completes successfully.
+
+3. **Toggle Product ID 1 (Success)**
+   - **Do:** Start the application and toggle the featured status of product ID `1`.
+   - **Expected:** The featured status updates successfully and remains in the updated state.
+
+4. **Toggle Product ID 2 (Failure and Rollback)**
+   - **Do:** Toggle the featured status of product ID `2`.
+   - **Expected:** The UI updates optimistically at first. After the API request fails, the featured status rolls back to its original state and an error message is displayed.
+
+5. **Delete Product (Success)**
+   - **Do:** Delete product ID `1`.
+   - **Expected:** The product is successfully removed from the list.
