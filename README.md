@@ -56,3 +56,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 5. **Delete Product (Success)**
    - **Do:** Delete product ID `1`.
    - **Expected:** The product is successfully removed from the list.
+
+
+See docs/decisions/ for design decisions.
