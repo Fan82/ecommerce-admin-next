@@ -4,7 +4,7 @@ import type { Order, OrderStatus } from "@/types/order";
 
 let orders: Order[] = [...mockOrders];
 
-function delay(ms: number): Promise<void> {
+export function delay(ms: number): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
@@ -49,4 +49,11 @@ export async function updateOrderStatus(
   orders = orders.map((order) => (order.id === id ? updated : order));
 
   return updated;
+}
+
+export async function fetchOrdersByCustomer(
+  customerId: number,
+): Promise<Order[]> {
+  await delay(300);
+  return orders.filter((order) => order.customerId === customerId);
 }
