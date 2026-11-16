@@ -1,55 +1,70 @@
 "use client";
-import { useState, FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import validateProduct from "@/utils/validateProduct";
 import formatPrice from "@/utils/formatPrice";
 import { categories } from "@/lib/categories";
 import { ArrowUpRightIcon, ImageIcon } from "@/components/icons";
-import type { Product } from "@/types/product";
+import {
+  EMPTY_PRODUCT_FORM,
+  toProductInput,
+  type ProductFormValues,
+  type ProductInput,
+} from "@/lib/productForm";
 
 type ProductsError = Partial<Record<"name" | "price" | "stock", string>>;
 
-export default function ProductForm() {
-  const router = useRouter();
+type ProductFormProps = {
+  initialValues?: ProductFormValues;
+  submitLabel: string;
+  cancelHref: string;
+  onSubmit: (input: ProductInput) => Promise<void>;
+};
 
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-  const [category, setCategory] = useState(categories[0].value);
-
+export default function ProductForm({
+  initialValues = EMPTY_PRODUCT_FORM,
+  submitLabel,
+  cancelHref,
+  onSubmit,
+}: ProductFormProps) {
+  const [values, setValues] = useState<ProductFormValues>(initialValues);
   const [errors, setErrors] = useState<ProductsError>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
   const errorCount = Object.keys(errors).length;
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function updateField<K extends keyof ProductFormValues>(
+    field: K,
+    value: ProductFormValues[K]
+  ) {
+    setValues((prev) => ({ ...prev, [field]: value }));
+  }
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setSubmitError(null);
 
-    const validationErrors = validateProduct({
-      name,
-      price,
-      stock,
-    });
-
+    const validationErrors = validateProduct(values);
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
       return;
     }
 
-    const product: Omit<Product, "id"> = {
-      name: name.trim(),
-      price: Number(price),
-      stock: Number(stock),
-      category,
-      featured: false,
-    };
-
-    console.log(product);
-    router.push("/dashboard/products")
+    setSubmitting(true);
+    try {
+      await onSubmit(toProductInput(values));
+    } catch (err) {
+      setSubmitError((err as Error).message);
+    } finally {
+      setSubmitting(false);
+    }
   }
 
-  const previewPrice = Number(price) > 0 ? formatPrice(Number(price)) : "NT$ —";
-  const categoryLabel = categories.find((item) => item.value === category)?.label;
+  const previewPrice =
+    Number(values.price) > 0 ? formatPrice(Number(values.price)) : "NT$ —";
+  const categoryLabel = categories.find((item) => item.value === values.category)?.label;
 
   return (
     <div className="form-layout">
@@ -64,6 +79,12 @@ export default function ProductForm() {
           </div>
         )}
 
+        {submitError && (
+          <p className="form-alert" role="alert">
+            {submitError}
+          </p>
+        )}
+
         <div className="field">
           <label htmlFor="name">Name</label>
           <input
@@ -71,8 +92,8 @@ export default function ProductForm() {
             className="input"
             type="text"
             placeholder="e.g. Leather Tote"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={values.name}
+            onChange={(e) => updateField("name", e.target.value)}
             aria-invalid={errors.name ? true : undefined}
             aria-describedby={errors.name ? "name-error" : undefined}
           />
@@ -92,8 +113,8 @@ export default function ProductForm() {
               type="number"
               inputMode="decimal"
               placeholder="0"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={values.price}
+              onChange={(e) => updateField("price", e.target.value)}
               aria-invalid={errors.price ? true : undefined}
               aria-describedby={errors.price ? "price-error" : undefined}
             />
@@ -111,8 +132,8 @@ export default function ProductForm() {
               type="number"
               inputMode="numeric"
               placeholder="0"
-              value={stock}
-              onChange={(e) => setStock(e.target.value)}
+              value={values.stock}
+              onChange={(e) => updateField("stock", e.target.value)}
               aria-invalid={errors.stock ? true : undefined}
               aria-describedby={errors.stock ? "stock-error" : undefined}
             />
@@ -133,8 +154,8 @@ export default function ProductForm() {
                   type="radio"
                   name="category"
                   value={item.value}
-                  checked={category === item.value}
-                  onChange={() => setCategory(item.value)}
+                  checked={values.category === item.value}
+                  onChange={() => updateField("category", item.value)}
                   className="visually-hidden"
                 />
                 <span>{item.label}</span>
@@ -144,14 +165,14 @@ export default function ProductForm() {
         </fieldset>
 
         <div className="form-actions">
-          <Link href="/dashboard/products" className="btn btn-secondary">
+          <Link href={cancelHref} className="btn btn-secondary">
             Cancel
           </Link>
-          <button type="submit" className="btn btn-primary">
+          <button type="submit" className="btn btn-primary" disabled={submitting}>
             <span className="icon-circle">
               <ArrowUpRightIcon />
             </span>
-            Create product
+            {submitting ? "Saving..." : submitLabel}
           </button>
         </div>
       </form>
@@ -162,12 +183,12 @@ export default function ProductForm() {
           <ImageIcon width={28} height={28} />
         </div>
         <div>
-          <p className="preview-name">{name.trim() || "Product name"}</p>
+          <p className="preview-name">{values.name.trim() || "Product name"}</p>
           <p className="preview-meta">{categoryLabel}</p>
         </div>
         <div className="preview-footer">
           <span className="preview-price">{previewPrice}</span>
-          <span className="preview-stock">Stock · {stock || 0}</span>
+          <span className="preview-stock">Stock · {values.stock || 0}</span>
         </div>
       </aside>
     </div>
