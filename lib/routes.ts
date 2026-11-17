@@ -6,21 +6,7 @@ export type AppRoute = {
 };
 
 export const APP_ROUTES: AppRoute[] = [
-  { path: "/", label: "Home", rendering: "server", protected: false },
-  { path: "/login", label: "Login", rendering: "server", protected: false },
-  {
-    path: "/products",
-    label: "Products (Public)",
-    rendering: "server",
-    protected: false,
-  },
-  { path: "/orders", label: "Orders", rendering: "server", protected: false },
-  {
-    path: "/customers",
-    label: "Customers",
-    rendering: "server",
-    protected: false,
-  },
+  
   {
     path: "/dashboard",
     label: "Dashboard",

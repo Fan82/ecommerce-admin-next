@@ -1,14 +1,10 @@
 import { mockOrders } from "@/lib/mockOrders";
 import { canTransition } from "@/lib/orderUtils";
+import { findById } from "@/lib/findById";
 import type { Order, OrderStatus } from "@/types/order";
+import { delay } from "./delay";
 
 let orders: Order[] = [...mockOrders];
-
-export function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
 
 export async function fetchOrders(status?: OrderStatus): Promise<Order[]> {
   await delay(300);
@@ -22,12 +18,7 @@ export async function fetchOrders(status?: OrderStatus): Promise<Order[]> {
 
 export async function fetchOrderById(id: number): Promise<Order | null> {
   await delay(300);
-
-  const found = orders.find((order) => order.id === id);
-  if (!found) {
-    return null;
-  }
-  return found;
+  return findById(orders, id);
 }
 
 export async function updateOrderStatus(
@@ -38,7 +29,7 @@ export async function updateOrderStatus(
 
   const target = orders.find((order) => order.id === id);
   if (!target) {
-    throw new Error("Order not found");
+    throw new Error(`Order ${id} not found`);
   }
 
   if (!canTransition(target.status, next)) {

@@ -1,11 +1,9 @@
 import type { Product } from "@/types/product";
 import { mockProducts } from "./mockProducts";
+import { findById } from "@/lib/findById";
+import { delay } from "@/lib/api/delay";
 
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-export async function getProductById(id: number): Promise<Product | undefined> {
+export async function getProductById(id: number): Promise<Product | null> {
   await delay(300);
-  return mockProducts.find((product) => product.id === id);
+  return findById(mockProducts, id)
 }

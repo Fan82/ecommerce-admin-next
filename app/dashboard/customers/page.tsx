@@ -2,7 +2,7 @@ import Link from "next/link";
 import { fetchCustomers } from "@/lib/api/customers";
 import { ROUTES } from "@/lib/routes";
 
-export async function CustomersPage() {
+export default async function CustomersPage() {
   const customers = await fetchCustomers();
   return (
     <main>

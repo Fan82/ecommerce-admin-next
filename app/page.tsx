@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ROUTES } from "@/lib/routes";
 import type { Metadata } from "next";
 import { getProducts } from "@/lib/getProducts";
 import { getProductHref } from "@/lib/productRoutes";
@@ -128,7 +129,7 @@ export default async function HomePage() {
             No orders yet. New orders will show up here.
           </p>
         </div>
-        <Link href="/orders" className="btn btn-secondary">
+        <Link href={ROUTES.orders} className="btn btn-secondary">
           View orders
         </Link>
       </section>

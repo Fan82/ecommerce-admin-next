@@ -11,6 +11,7 @@ import {
   type ProductFormValues,
   type ProductInput,
 } from "@/lib/productForm";
+import { ProductPreview } from "@/components/ProductPreview";
 
 type ProductsError = Partial<Record<"name" | "price" | "stock", string>>;
 
@@ -177,20 +178,7 @@ export default function ProductForm({
         </div>
       </form>
 
-      <aside className="card-feature preview" aria-label="Preview">
-        <p className="preview-heading">Preview</p>
-        <div className="preview-image" aria-hidden="true">
-          <ImageIcon width={28} height={28} />
-        </div>
-        <div>
-          <p className="preview-name">{values.name.trim() || "Product name"}</p>
-          <p className="preview-meta">{categoryLabel}</p>
-        </div>
-        <div className="preview-footer">
-          <span className="preview-price">{previewPrice}</span>
-          <span className="preview-stock">Stock · {values.stock || 0}</span>
-        </div>
-      </aside>
+      <ProductPreview values={values} />
     </div>
   );
 }
