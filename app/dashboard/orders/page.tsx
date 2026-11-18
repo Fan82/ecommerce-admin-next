@@ -1,20 +1,32 @@
-import Link from "next/link";
 import { fetchOrders } from "@/lib/api/orders";
-import { ROUTES } from "@/lib/routes";
+import { fetchCustomers } from "@/lib/api/customers";
+import { isOrderStatus } from "@/lib/orderUtils";
+import { OrderStatusFilter } from "@/components/OrderStatusFilter";
+import { OrderTable } from "@/components/OrderTable";
 
-export default async function OrdersPage() {
-  const orders = await fetchOrders();
+type OrdersPageProps = {
+  searchParams: Promise<{ status?: string }>;
+};
+
+
+export default async function OrdersPage({ searchParams }: OrdersPageProps) {
+  const { status } = await searchParams;
+  const filter = isOrderStatus(status) ? status : undefined;
+
+  const [orders, customers] = await Promise.all([
+    fetchOrders(filter),
+    fetchCustomers(),
+  ]);
+
+  const countText =
+    orders.length === 1 ? "1 order" : `${orders.length} orders`;
 
   return (
     <main>
       <h1>Orders</h1>
-      <ul>
-        {orders.map((order) => (
-          <li key={order.id}>
-            <Link href={ROUTES.orderDetail(order.id)}>Order #{order.id}</Link>
-          </li>
-        ))}
-      </ul>
+      <p>{countText}</p>
+      <OrderStatusFilter current={filter} />
+      <OrderTable orders={orders} customers={customers} />
     </main>
   );
 }

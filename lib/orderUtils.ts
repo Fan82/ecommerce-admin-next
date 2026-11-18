@@ -1,3 +1,4 @@
+import { ORDER_STATUSES } from "@/types/order";
 import type { Order, OrderStatus } from "@/types/order";
 
 export function getOrderTotal(order: Order): number {
@@ -33,4 +34,14 @@ export const NEXT_STATUS: Record<OrderStatus, OrderStatus[]> = {
 
 export function canTransition(from: OrderStatus, to: OrderStatus): boolean {
   return NEXT_STATUS[from].includes(to);
+}
+
+export function isOrderStatus(value: string | undefined): value is OrderStatus {
+  return ORDER_STATUSES.some((s) => s === value);
+}
+
+export function getItemCount(order: Order): number {
+  return order.items.reduce((total, item) => {
+    return total + item.quantity;
+  }, 0);
 }
