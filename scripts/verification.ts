@@ -16,3 +16,15 @@ export function summarizeChecks(results: CheckResult[]): string {
     lines.push(`${passedCount}/${results.length} passed`);
     return lines.join("\n");
 }
+
+export function toMarkdownTable(results: CheckResult[]): string {
+    const header = "| Check | Command / Steps | Expected | Pass |";
+    const divider = "| --- | --- | --- | --- |";
+
+    const rows = results.map((result) => {
+        const pass = result.passed ? "Yes" : "No";
+        return `| ${result.name} | ${result.command} | ${result.expected} | ${pass} |`;
+    });
+
+    return [header, divider, ...rows].join("\n");
+}

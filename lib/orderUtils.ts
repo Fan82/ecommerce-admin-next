@@ -45,3 +45,16 @@ export function getItemCount(order: Order): number {
     return total + item.quantity;
   }, 0);
 }
+
+export function getStatusCounts(orders: Order[]): Record<OrderStatus, number> {
+  return orders.reduce((counts, order) => {
+    counts[order.status] += 1;
+    return counts
+  }, {
+    pending: 0,
+    paid: 0,
+    shipped: 0,
+    delivered: 0,
+    cancelled: 0,
+  })
+}

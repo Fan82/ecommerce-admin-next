@@ -1,3 +1,7 @@
+import { MODULE_ORDER } from "@/types/feature";
+import type { Feature } from "@/types/feature";
+
+
 import { MODULE_ORDER, type Feature, type Module } from "@/types/feature";
 
 export const features: Feature[] = [
@@ -53,4 +57,20 @@ export function toChecklist(list: Feature[]): string {
         return [`## ${module}`, ...lines].join("\n")
     })
     return sections.join("\n\n");
+}
+
+export function getProgress(list: Feature[]): { done: number; total: number; percent: number } {
+    const total = list.length;
+    const done = list.filter((feature) => feature.done).length;
+    const percent = total === 0 ? 0 : Math.round((done / total) * 100);
+
+    return { done, total, percent }
+}
+
+export function getNextMust(list: Feature[]): "Feature" | "undefined" {
+    const todo = list.filter((feature) => feature.priority === "must");
+
+    todo.sort((a, b) => MODULE_ORDER.indexOf(a.module) - MODULE_ORDER.indexOf(b.module))
+
+    return todo[0]
 }
