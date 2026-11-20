@@ -1,8 +1,9 @@
 import { Suspense } from "react";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProductById } from "@/lib/getProductById";
-import StockBadge from "@/components/StockBadge";
+import { StockLevelBadge } from "@/components/StockLevelBadge";
 import RelatedProducts from "@/components/RelatedProducts";
 import PageHeader from "@/components/PageHeader";
 import { ImageIcon } from "@/components/icons";
@@ -10,29 +11,31 @@ import formatPrice from "@/utils/formatPrice";
 import { getStockValue } from "@/utils/inventory";
 
 type ProductDetailPageProps = {
-  params: Promise<{ id: number }>;
+  params: Promise<{ id: string }>;
 };
 
 export async function generateMetadata({
   params,
 }: ProductDetailPageProps): Promise<Metadata> {
   const { id } = await params;
-  const product = await getProductById(id);
+  const product = await getProductById(Number(id));
   if (!product) return { title: "Product not found" };
   return { title: product.name };
 }
 
-export default async function ProductDetailPage({
-  params,
-}: ProductDetailPageProps) {
+export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
   const { id } = await params;
-  const product = await getProductById(id);
+  const product = await getProductById(Number(id));
 
   if (!product) notFound();
 
   return (
     <>
       <PageHeader title={product.name} backHref="/dashboard/products" backLabel="Products" />
+
+      <p>
+        <Link href={`/dashboard/products/${product.id}/edit`}>Edit</Link>
+      </p>
 
       <div className="detail-grid">
         <div className="card-feature detail-media">
@@ -51,7 +54,7 @@ export default async function ProductDetailPage({
           <div>
             <dt>Stock</dt>
             <dd>
-              <StockBadge stock={product.stock} />
+              <StockLevelBadge stock={product.stock} />
             </dd>
           </div>
           <div>
