@@ -1,26 +1,34 @@
-export interface ProductInput {
-  name: string;
-  price: string;
-  stock: string;
-}
+import { categories } from "@/lib/categories";
+import type { ProductFormErrors, ProductFormValues } from "@/lib/productForm";
+import { error } from "console";
 
-type ProductError = Partial<Record<"name" | "price" | "stock", string>>;
+const NAME_MAX_LENGTH = 50;
 
-export default function validateProduct(input: ProductInput): ProductError {
-  const errors: ProductError = {};
+export default function validateProduct(
+  values: ProductFormValues,
+): ProductFormErrors {
+  const errors: ProductFormErrors = {};
 
-  if (input.name.trim() === "") {
+  const name = values.name.trim();
+
+  if (name === "") {
     errors.name = "Name is required";
+  } else if (name.length > NAME_MAX_LENGTH) {
+    errors.name = "Name must be 50 characters or fewer";
   }
 
-  const price = Number(input.price);
-  if (input.price.trim() === "" || !Number.isFinite(price) || price <= 0) {
+  const price = Number(values.price);
+  if (values.price.trim() === "" || !Number.isFinite(price) || price <= 0) {
     errors.price = "Price must be greater than 0";
   }
 
-  const stock = Number(input.stock);
-  if (input.stock.trim() === "" || !Number.isInteger(stock) || stock < 0) {
+  const stock = Number(values.stock);
+  if (values.stock.trim() === "" || !Number.isInteger(stock) || stock < 0) {
     errors.stock = "Stock must be a whole number, 0 or more";
+  }
+
+  if (!categories.some((item) => item.value === values.category)) {
+    errors.category = "Choose a category";
   }
 
   return errors;
